@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Random Giphy Stuff</title>
+  <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Random Giphy Stuff</h1>
+
+    <!-- Rendered Buttons will get Dumped Here  -->
+    <div id="buttons-view"></div>
+
+    <form id="junk-form">
+      <label for="junk-input">Add more junk</label>
+      <input type="text" id="junk-input">
+      <br>
+
+      <!-- Button triggers new movie to be added -->
+      <input id="add-junk" type="submit" value="Submit">
+    </form>
+
+    <!-- All kinds of Junk will Get Dumped Here -->
+    <div id="gifs-appear-here"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      // Initial array of random junk
+      var junkpile = ["Sandford and Son", "Zorro", "Marvin the Martian", "The Imperial March", "Gilligan", "Oscar the Grouch"];
+
+      // displayJunk function re-renders the HTML to display the appropriate content
+      function displayJunk() {
+        // clear the gifs-appear-here div
+        document.getElementById("gifs-appear-here").innerHTML = "";
+
+        var junk = $(this).attr("data-name");
+        
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + junk + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
+
+        // Creating an AJAX call for the specific movie button being clicked
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function(response) {
+
+          var results = response.data;
+          // Looping over every result item
+          for (var i = 0; i < results.length; i++) {
+
+            // Creating a div to hold the junk
+            var gifDiv = $("<div class='junk'>");
+
+            // Creating an image tag
+              var junkImage = $("<img>");
+
+              // Giving the image tag an src attribute of a proprty pulled off the
+              // result item
+              junkImage.attr("src", results[i].images.fixed_height.url);
+
+              // Appending the paragraph and personImage we created to the "gifDiv" div we created
+             // gifDiv.append(p);
+              gifDiv.append(junkImage);
+
+              // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
+              $("#gifs-appear-here").prepend(gifDiv);
+
+          }
+        });
+
+      }
+
+      // Function for displaying music data
+      function renderButtons() {
+
+        // Deleting the music prior to adding new music
+        // (this is necessary otherwise you will have repeat buttons)
+        $("#buttons-view").empty();
+
+        // Looping through the array of movies
+        for (var i = 0; i < junkpile.length; i++) {
+
+          // Then dynamicaly generating buttons for each movie in the array
+          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+          var a = $("<button>");
+          // Adding a class of junk-btn to our button
+          a.addClass("junk-btn");
+          // Adding a data-attribute
+          a.attr("data-name", junkpile[i]);
+          // Providing the initial button text
+          a.text(junkpile[i]);
+
+          // Adding the button to the buttons-view div
+          $("#buttons-view").append(a);
+        }
+      }
+
+      // This function handles events where a junk button is clicked
+      $("#add-junk").on("click", function(event) {
+        event.preventDefault();
+        // This line grabs the input from the textbox
+        var newJunk = $("#junk-input").val().trim();
+
+        // Adding junk from the textbox to our array
+        junkpile.push(newJunk);
+
+        // Calling renderButtons which handles the processing of our junk array
+        renderButtons();
+      });
+
+      // Adding a click event listener to all elements with a class of "junk-btn"
+      $(document).on("click", ".junk-btn", displayJunk);
+
+      // Calling the renderButtons function to display the intial buttons
+      renderButtons();
+    </script>
+  </div>
+</body>
+
+</html>
