@@ -58,15 +58,32 @@
           // Looping over every result item
           for (var i = 0; i < results.length; i++) {
 
+
+            // Console out the response data to see what else we need, such as the stills
+            console.log(results[0])
+            
             // Creating a div to hold the junk
             var gifDiv = $("<div class='junk'>");
+            
+            // Get the rating
+            var rating = results[i].rating;
+
+            // create an element to hold the rating
+            var junkRating = $("<p>").text("Rating: " + rating);
+            
+            // attach the junkRating element to the junk div (gifDiv)
+            gifDiv.append(junkRating);
 
             // Creating an image tag
               var junkImage = $("<img>");
 
               // Giving the image tag an src attribute of a proprty pulled off the
               // result item
+              // fixed_height = animated gif
+              
               junkImage.attr("src", results[i].images.fixed_height.url);
+              
+              // 
 
               // Appending the paragraph and personImage we created to the "gifDiv" div we created
              // gifDiv.append(p);
