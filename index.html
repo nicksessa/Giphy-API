@@ -60,7 +60,7 @@
 
 
             // Console out the response data to see what else we need, such as the stills
-            console.log(results[0])
+            //console.log(results[0])
             
             // Creating a div to hold the junk
             var gifDiv = $("<div class='junk'>");
@@ -81,9 +81,13 @@
               // result item
               // fixed_height = animated gif
               
-              junkImage.attr("src", results[i].images.fixed_height.url);
+              junkImage.attr("data-animate", results[i].images.fixed_height.url);
+              junkImage.attr("data-still", results[i].images.fixed_height_still.url)
+              junkImage.attr("src", results[i].images.fixed_height_still.url)
+              //junkImage.attr("class", "gif")
+              junkImage.addClass("gif");
               
-              // 
+              junkImage.attr("data-state", "still")
 
               // Appending the paragraph and personImage we created to the "gifDiv" div we created
              // gifDiv.append(p);
@@ -140,6 +144,31 @@
 
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
+      
+      
+
+            // add the onclick event for the images to switch from still to animated gifs
+      $(document).on("click", ".gif", function() {
+        // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+        var state = $(this).attr("data-state");
+        console.log("the state of the gif is: " + state)
+        // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+        // Then, set the image's data-state to animate
+        // Else set src to the data-still value
+        if (state === "still") {
+          $(this).attr("src", $(this).attr("data-animate"));
+          $(this).attr("data-state", "animate");
+        } else {
+          $(this).attr("src", $(this).attr("data-still"));
+          $(this).attr("data-state", "still");
+        }
+      });
+      
+      
+      
+      
+      
+      
     </script>
   </div>
 </body>
