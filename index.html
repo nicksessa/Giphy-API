@@ -51,6 +51,18 @@
       }
       .row.content {height:auto;} 
     }
+    
+    img {
+      margin: 5px;
+      cursor: pointer;
+    }
+    #image-div {
+      padding: 5px;
+    }
+    #gifs-appear-here {
+      margin-right: 10px;
+    }
+    
   </style>
 </head>
 <body>
@@ -115,7 +127,7 @@
 
 <script type="text/javascript">
       // Initial array of random people and things
-      var randomThings = ["Sanford and Son", "Zorro", "Marvin the Martian", "The Imperial March", "Gilligan", "Oscar the Grouch", "Batman", "Wonder Woman"];
+      var randomThings = ["Conan the barbarian", "Zorro", "Marvin the Martian", "The Imperial March", "Gilligan", "Oscar the Grouch", "Batman", "Wonder Woman"];
       
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
@@ -155,15 +167,26 @@
           url: queryURL,
           method: "GET"
         }).then(function(response) {
+        
+        
+          // first thing we need to do is create a row div and add it to the gifs-appear-here div
+          var rowDiv1 = $("<div class='row' id='rowDiv1'>")
+          $("#gifs-appear-here").append(rowDiv1);
 
           var results = response.data;
           // Looping over every result item
           for (var i = 0; i < results.length; i++) {
             // Console out the response data to see what else we need, such as the stills
             console.log(results[i])
-            
+            // if counter is divisible by 4 then create a new row
+            if (i % 4 == 0) {
+              //var newRowDiv = $("<div class='row'");
+              
+            }
             // Creating a div to hold the images
-            var gifDiv = $("<div class='image-div'>");
+            var gifDiv = $("<div class='image-div col-lg-4 col-md-4 col-xs-4'>");
+            //gifDiv.addClass
+            //var gifDiv = document.getElementById("gifs-appear-here");
             var rating = results[i].rating;
 
             // create an element to hold the rating
@@ -179,16 +202,22 @@
               imageTag.attr("data-still", results[i].images.fixed_height_still.url)
               imageTag.attr("src", results[i].images.fixed_height_still.url)
               //junkImage.attr("class", "gif")
-              imageTag.addClass("gif");
+              imageTag.addClass("gif img-responsive");
               
               imageTag.attr("data-state", "still")
 
-              // Appending the paragraph and personImage we created to the "gifDiv" div we created
+              // Append the element we created to the "gifDiv" div
              // gifDiv.append(p);
               gifDiv.append(imageTag);
+              
+              // add a new row after4 images
+              if (i % 4 == 0) {
+                //var newRowDiv = $("<div class='row'");
+                
+              }
 
               // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
-              $("#gifs-appear-here").prepend(gifDiv);
+              $("#rowDiv1").prepend(gifDiv);
 
           }
         });
