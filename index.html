@@ -251,16 +251,24 @@
         // This line grabs the input from the textbox
         var newThing = $("#input-thing").val().trim();
         if (newThing != "") {
-          // Adding junk from the textbox to our array
-          randomThings.push(newThing);
-          // Calling renderButtons which handles the processing of our junk array
-          renderButtons();
+          var newThing2 = newThing.toLowerCase()
+          var foundDuplicate = false;
+          for(var i = 0; i < randomThings.length; i++) {
+            var n = randomThings[i].toLowerCase()
+            if ( n == newThing2) {
+              foundDuplicate = true;
+            }
+          }
+          
+          if (!foundDuplicate) {
+          // Adding text from the textbox to our array
+            randomThings.push(newThing);
+            // Calling renderButtons which handles the processing of the array
+            renderButtons();
+          }
         }
       });
-      
-      
-      
-      
+        
 </script>
 
 
