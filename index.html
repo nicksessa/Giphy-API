@@ -250,10 +250,12 @@
         event.preventDefault();
         // This line grabs the input from the textbox
         var newThing = $("#input-thing").val().trim();
-        // Adding junk from the textbox to our array
-        randomThings.push(newThing);
-        // Calling renderButtons which handles the processing of our junk array
-        renderButtons();
+        if (newThing != "") {
+          // Adding junk from the textbox to our array
+          randomThings.push(newThing);
+          // Calling renderButtons which handles the processing of our junk array
+          renderButtons();
+        }
       });
       
       
